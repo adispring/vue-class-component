@@ -5,10 +5,18 @@ import { componentFactory, $internalHooks } from './component'
 export { createDecorator, VueDecorator, mixins } from './util'
 
 // Component 装饰器兼容带 options 和 不带 options 两种写法，即：
-// @Component({ ... }) class VueComponent extends Vue { ... } 和 @Component class VueComponent extends Vue { ... }
+
+// @Component({ ...options })
+// class VueComponent extends Vue { ... }
 function Component <V extends Vue>(options: ComponentOptions<V> & ThisType<V>): <VC extends VueClass<V>>(target: VC) => VC
+
+// @Component
+// class VueComponent extends Vue { ... }
 function Component <VC extends VueClass<Vue>>(target: VC): VC
+
+// Component 源码实现
 function Component (options: ComponentOptions<Vue> | VueClass<Vue>): any {
+  debugger
   // 1. options 是函数时，说明 @Component 直接装饰类型，此时 Component 是装饰器函数
   // 对应这种情况：@Component class VueComponent extends Vue { ... }
   if (typeof options === 'function') {

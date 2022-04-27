@@ -249,9 +249,13 @@ function forwardStaticMembers(Extended, Original, Super) {
 }
 
 function Component(options) {
+  // 1. options 是函数时，说明 @Component 直接装饰类型，此时 Component 是装饰器函数
+  // 对应这种情况：@Component class VueComponent extends Vue { ... }
   if (typeof options === 'function') {
     return componentFactory(options);
-  }
+  } // 2. 否则，说明 @Component 接受 options 参数，然后在装饰类型，此时 Component 是装饰器工厂函数，即生成装饰器的函数
+  // 对应这种情况：@Component({ ... }) class VueComponent extends Vue { ... }
+
 
   return function (Component) {
     return componentFactory(Component, options);

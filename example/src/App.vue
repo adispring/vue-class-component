@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p>hi: {{ hi }} </p>
     <input v-model="msg">
     <p>prop: {{ propMessage }}</p>
     <p>msg: {{ msg }}</p>
@@ -40,20 +41,55 @@ const AppProps = Vue.extend({
     World
   },
 
+  mixins: [{
+    data() {
+      return {
+        hi: 'hi3'
+      }
+    },
+  }],
+
+  props: {
+    propMessage: String
+  },  
+
   // Vuex's component binding helper can use here
-  computed: mapState([
+  computed: {
+    ...mapState([
     'count'
-  ]),
-  methods: mapMutations([
-    'increment'
   ])
+  },
+
+  data() {
+    return {
+      msg: 'Hello Vue!',
+      helloMsg: '',
+      computedMsg: '',
+      // hi: 'hi',
+    }
+  },
+  methods: {
+    ...mapMutations([
+    'increment'
+  ]),
+    greet() {
+      
+    }
+  }
 })
 export default class App extends AppProps {
+
+  constructor() {
+    super()
+    this.hi = 'constructor'
+  }
   // inital data
   msg: number = 123
 
   // use prop values for initial data
   helloMsg: string = 'Hello, ' + this.propMessage
+
+  hi: string = 'hi2'
 
   // annotate refs type
   $refs!: {
@@ -77,7 +113,7 @@ export default class App extends AppProps {
 
   // method
   greet () {
-    alert('greeting: ' + this.msg)
+    // alert('greeting: ' + this.msg)
     this.$refs.helloComponent.sayHello()
   }
 
